@@ -15,7 +15,8 @@ after_success:
   - docker build -t congweibai/multi-server ./server
   - docker build -t congweibai/multi-worker ./worker
   # Log in to ther Docker CLI
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker login -u "$DOCKER_ID" -p "$DOCKER_PASSWORD" docker.io
   # Take those images and push them to Docker hub
   - docker push congweibai/multi-client
   - docker push congweibai/multi-nginx
