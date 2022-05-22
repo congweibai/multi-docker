@@ -6,7 +6,8 @@ services:
 before_install:
   - docker build -t congweibai/react-test -f ./client/Dockerfile.dev ./client
 
-script: -docker run -e CI=true congweibai/react-test npm test -- --coverage
+script:
+  - docker run -e CI=true congweibai/react-test npm test
 
 after_success:
   - docker build -t congweibai/multi-client ./client
