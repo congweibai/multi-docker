@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t congweibai/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run congweibai/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t congweibai/multi-client ./client
+  - docker build -t congweibai/multi-nginx ./nginx
+  - docker build -t congweibai/multi-server ./server
+  - docker build -t congweibai/multi-worker ./worker
+  # Log in to ther Docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to Docker hub
+  - docker push congweibai/multi-client
+  - docker push congweibai/multi-nginx
+  - docker push congweibai/multi-server
+  - docker push congweibai/multi-worker
